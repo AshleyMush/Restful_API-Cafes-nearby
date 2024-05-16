@@ -26,7 +26,14 @@ def home():
     return render_template("index.html")
 
 
-# HTTP GET - Read Record
+
+
+
+# HTTP POST - Create Record
+
+
+# --------------------------------------------- HTTP GET - (Read) Record
+# Read a Random Record from the Database
 @app.route("/random")
 def get_random_cafe():
 
@@ -47,8 +54,39 @@ def get_random_cafe():
     })
 
 
+# Read all Records from the Database
+@app.route("/all")
+def get_all_cafes():
+    all_cafes = Cafe.query.all()
+    return jsonify(cafes =[cafe.to_dict() for cafe in all_cafes])
 
-# HTTP POST - Create Record
+"""
+List Comprehension: 
+
+for cafe in get_all_cafes:
+    cafe.to_dict()
+    return jsonify(cafes=[cafe.to_dict()]
+
+"""
+
+
+# Read a Record by ID from the Database
+@app.route("/search")
+def get_cafe_by_location():
+    location= Cafe.query.filter_by(location = request.args.get("loc")).first()
+
+    if location:
+        return jsonify(cafe=location.to_dict())
+    else:
+        return jsonify(error={"Not Found": "Sorry, we don't have a cafe at that location."}), 404
+                            #  Key       : Value
+
+
+
+
+
+
+
 
 # HTTP PUT/PATCH - Update Record
 
