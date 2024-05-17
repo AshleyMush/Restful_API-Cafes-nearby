@@ -73,7 +73,9 @@ for cafe in get_all_cafes:
 # Read a Record by ID from the Database
 @app.route("/search")
 def get_cafe_by_location():
-    location= Cafe.query.filter_by(location = request.args.get("loc")).first()
+    location = request.args.get("loc")
+
+    location= Cafe.query.filter_by(location).first()
 
     if location:
         return jsonify(cafe=location.to_dict())
