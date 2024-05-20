@@ -19,6 +19,7 @@ class Cafe(db.Model):
     can_take_calls = db.Column(db.Boolean, nullable=False)
     coffee_price = db.Column(db.String(250), nullable=True)
 
+    # Helper function to convert model instances to dictionaries
     def to_dict(self):
         # Method 1.
         dictionary = {}

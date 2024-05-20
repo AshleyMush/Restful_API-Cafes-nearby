@@ -74,14 +74,38 @@ for cafe in get_all_cafes:
 @app.route("/search")
 def get_cafe_by_location():
     query_location = request.args.get("loc")
+    cafes_at_location = Cafe.query.filter_by(location=query_location).all()
 
-
-
-    if location:
-        return jsonify(cafe=location.to_dict())
+    if cafes_at_location:
+        return jsonify(cafes=[cafe.to_dict() for cafe in cafes_at_location])
     else:
         return jsonify(error={"Not Found": "Sorry, we don't have a cafe at that location."}), 404
                             #  Key       : Value
+
+
+@app.route("/add", methods=["POST"])
+def post_new_cafe():
+    new_cafe = Cafe(
+        name = request.form.get("name"),
+        map_url = request.form.get("map_url"),
+        img_url = request.form.get("img_url"),
+        location = request.form.get("location"),
+        seats = request.form.get("seats"),
+        coffee_price = request.form.get("coffee_price"),
+        has_sockets = int(request.form.get("has_sockets")),
+        has_wifi = int(request.form.get("has_wifi")),
+        has_toilet = int(request.form.get("has_toilet")),
+        can_take_calls = int(request.form.get("can_take_calls"))
+    )
+    db.session.add(new_cafe)
+    db.session.commit()
+
+    return jsonify(response = {"Success":"Successfully added new cafe"})
+
+
+
+
+
 
 
 
